@@ -6,33 +6,37 @@
 /*   By: jkertgat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/01 19:49:02 by jkertgat          #+#    #+#             */
-/*   Updated: 2018/03/19 00:07:29 by jkertgat         ###   ########.fr       */
+/*   Updated: 2018/03/19 16:38:51 by jkertgat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+char	*ft_itoa(int nbr)
 {
-	int		i;
-	char	*str;
+	int		length;
 	int		sign;
+	char	*str;
 
-	sign = n < 0 ? 1 : 0;
-	if (n == -2147483648 || n == 0)
-		return (n == 0 ? ft_strdup("0") : ft_strdup("-2147483648"));
-	if (sign)
-		n *= -1;
-	i = ft_num_len(n);
-	if (!(str = ft_strnew(i + 1 + sign)))
+	sign = nbr;
+	length = 1;
+	while (sign /= 10)
+		length++;
+	sign = nbr < 0 ? 1 : 0;
+	length = nbr < 0 ? length += 1 : length;
+	if (nbr == -2147483648)
+		return (str = ft_strdup("-2147483648"));
+	str = ft_strnew(length);
+	if (!str)
 		return (NULL);
-	str[i + sign] = '\0';
-	while (--i >= sign)
-	{
-		str[i + sign] = (n % 10) + 48;
-		n /= 10;
-	}
 	if (sign)
 		str[0] = '-';
+	nbr = nbr < 0 ? nbr *= -1 : nbr;
+	while (--length >= sign)
+	{
+		str[length] = (nbr >= 10) ? (nbr % 10) + 48 : nbr + 48;
+		nbr /= 10;
+	}
+	str[ft_strlen(str)] = '\0';
 	return (str);
 }
